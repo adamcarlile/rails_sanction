@@ -20,8 +20,8 @@ module RailsSanction
       send(RailsSanction.config.storage_column)
     end
 
-    def can? role, *predicates
-      permission = Sanction::Permission.new(send(RailsSanction.config.storage_column), *predicates)
+    def can?(role, *predicates)
+      permission = Sanction.permission(send(RailsSanction.config.storage_column), *predicates)
       permission.permitted_with_scope?(role)
     end
 
