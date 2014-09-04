@@ -2,9 +2,11 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'sanction'
 
+require 'rails_sanction/resolvers/query'
+require 'rails_sanction/resolvers/model'
 require 'rails_sanction/permissions'
 require 'rails_sanction/sanctioned'
-require "rails_sanction/sanction_proxy"
+require "rails_sanction/node_extensions"
 require "rails_sanction/version"
 
 require 'rails_sanction/engine' if defined? Rails

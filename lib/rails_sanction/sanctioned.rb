@@ -11,13 +11,13 @@ module RailsSanction
         if instance_variable_get("@#{RailsSanction.config.storage_column}")
           instance_variable_get("@#{RailsSanction.config.storage_column}")
         else
-          instance_variable_set("@#{RailsSanction.config.storage_column}", SanctionProxy.new(Sanction.build(user_permissions)))
+          instance_variable_set("@#{RailsSanction.config.storage_column}", Sanction.build(user_permissions))
         end
       end
     end
 
     def permitted
-      @permitted ||= RailsSanction::Permissions.new(send(RailsSanction.config.storage_column))
+      send(RailsSanction.config.storage_column)
     end
 
     def can? role, *predicates
