@@ -2,6 +2,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'sanction'
 
+require 'rails_sanction/exceptions/unauthorized'
 require 'rails_sanction/resolvers/query'
 require 'rails_sanction/resolvers/model'
 require 'rails_sanction/sanctioned'
