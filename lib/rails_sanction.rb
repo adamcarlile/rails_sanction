@@ -20,7 +20,6 @@ module RailsSanction
   def config
     @config ||= ActiveSupport::OrderedOptions.new.tap do |x|
       x.user_model               = User
-      x.storage_column           = :permissions
       x.default_permissions_hash = {
         mode:     :whitelist,
         scope:    [:read],

@@ -2,33 +2,34 @@ module RailsSanction
   module Sanctioned
     extend ActiveSupport::Concern
 
-    included do
+    included do |variable|
       before_save do
-        self.send("#{RailsSanction.config.storage_column}=", send(RailsSanction.config.storage_column).to_hash)
-      end
+        self.permissions = permissions.to_hash
+      end      
+    end
 
-      define_method RailsSanction.config.storage_column do
-        if instance_variable_get("@#{RailsSanction.config.storage_column}")
-          instance_variable_get("@#{RailsSanction.config.storage_column}")
-        else
-          instance_variable_set("@#{RailsSanction.config.storage_column}", Sanction.build(user_permissions))
-        end
-      end
+    def permissions
+      @permissions ||= Sanction.build(user_permissions)
+    end
+
+    def permissions=(value)
+      @permissions = Sanction.build(value)
+      super(value.to_hash)
     end
 
     def permitted
-      send(RailsSanction.config.storage_column)
+      permissions
     end
 
     def can?(role, *predicates)
-      permission = Sanction.permission(send(RailsSanction.config.storage_column), *predicates)
+      permission = Sanction.permission(permissions, *predicates)
       permission.permitted_with_scope?(role)
     end
 
     private
 
       def user_permissions
-        (attributes[RailsSanction.config.storage_column.to_s] || default_permissions).with_indifferent_access
+        (attributes['permissions'] || default_permissions).with_indifferent_access
       end
 
       def default_permissions
