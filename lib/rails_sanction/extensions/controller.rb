@@ -4,6 +4,9 @@ module RailsSanction
       extend ActiveSupport::Concern
 
       # sanctioned scope: -> { [Bookcase.find(params[:bookcase])] }
+      included do
+        helper_method :permissions
+      end
 
       def authorize! role, object
         predicates = [self.class.sanction_scope.call].flatten.compact
@@ -18,6 +21,7 @@ module RailsSanction
           current_user.permissions
         end
       end
+
 
       module ClassMethods
 
