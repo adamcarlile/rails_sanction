@@ -17,10 +17,6 @@ module RailsSanction
       super(value.to_hash)
     end
 
-    def permitted
-      permissions
-    end
-
     def can?(role, *predicates)
       permission = Sanction.permission(permissions, *predicates)
       permission.permitted_with_scope?(role)

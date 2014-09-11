@@ -9,6 +9,7 @@ module RailsSanction
       Sanction::Node.send(:prepend, RailsSanction::Extensions::Node)
       Sanction::Permission.send(:prepend, RailsSanction::Extensions::Permissions)
       ActionController::Base.send(:include, RailsSanction::Extensions::Controller)
+      ActiveRecord::Relation.send(:include, RailsSanction::Extensions::Relation)
     end
 
   end

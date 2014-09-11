@@ -11,6 +11,14 @@ module RailsSanction
         raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *predicates
       end
 
+      def permissions
+        if self.class.sanction_scope.call
+          current_user.permissions.find(self.class.sanction_scope.call)
+        else
+          current_user.permissions
+        end
+      end
+
       module ClassMethods
 
         def sanctioned options={}

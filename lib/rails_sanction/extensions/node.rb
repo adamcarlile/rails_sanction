@@ -6,7 +6,7 @@ module RailsSanction
       def method_missing(method, *args, &block)
         case
         when available_pluralised_models.include?(method) 
-          RailsSanction::Resolvers::Query.new(self[method.to_s.singularize.to_sym]).resolve
+          self[method.to_s.singularize.to_sym]
         when available_models.include?(method)
           raise ArgumentError if args.blank?
           self[method][args.first]
@@ -20,13 +20,7 @@ module RailsSanction
       end
 
       def available_models
-        @available_models ||= begin
-          array = []
-          walk do |child|
-            array << child.type
-          end
-          array.uniq.compact
-        end
+        @available_models ||= ActiveRecord::Base.connection.tables.map(&:singularize).map(&:to_sym)
       end
 
       def find(object)

@@ -11,7 +11,10 @@ module RailsSanction
       end
 
       def resolve
-        model.where(id: @permission.allowed_ids).where.not(id: @permission.denied_ids)
+        query = model.all
+        query = query.where(id: @permission.allowed_ids) if @permission.allowed_ids.any?
+        query = query.where.not(id: @permission.denied_ids) if @permission.denied_ids.any?
+        query
       end
 
     end
