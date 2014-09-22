@@ -9,14 +9,14 @@ module RailsSanction
       end
 
       def authorize! role, object
-        predicates = [self.class.sanction_scope.call].flatten.compact
+        predicates = [self.class.sanction_scope.call(params)].flatten.compact
         predicates << object unless object.is_a? Class
         raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *predicates
       end
 
       def permissions
-        if self.class.sanction_scope.call
-          current_user.permissions.find(self.class.sanction_scope.call)
+        if self.class.sanction_scope.call(params)
+          current_user.permissions.find(self.class.sanction_scope.call(params).last)
         else
           current_user.permissions
         end
@@ -27,7 +27,7 @@ module RailsSanction
 
         def sanctioned options={}
           options.reverse_merge!({
-            scope: -> {}
+            scope: ->(params={}) {}
           })
           cattr_accessor :sanction_scope
           self.sanction_scope = options[:scope]
