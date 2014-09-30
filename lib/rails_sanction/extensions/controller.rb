@@ -20,7 +20,7 @@ module RailsSanction
 
       def permission_predicates
         @permission_predicates ||= begin
-          predicates = [current_user.permissions.root]
+          predicates = []
           predicates += self.class.sanction_scope.call(params).flatten.compact if self.class.sanction_scope.call(params).any? 
           predicates
         end
