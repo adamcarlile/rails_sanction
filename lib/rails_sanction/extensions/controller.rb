@@ -19,11 +19,11 @@ module RailsSanction
       end
 
       def permission_predicates
-        @permission_predicates ||= begin
-          predicates = []
-          predicates += self.class.sanction_scope.call(params).flatten.compact if self.class.sanction_scope.call(params).any? 
-          predicates
-        end
+        @permission_predicates ||= (instance_sanction_scope || [])
+      end
+
+      def instance_sanction_scope
+        @instance_sanction_scope ||= [instance_eval(&self.class.sanction_scope)].flatten.compact
       end
 
 
@@ -31,7 +31,7 @@ module RailsSanction
 
         def sanctioned options={}
           options.reverse_merge!({
-            scope: ->(params={}) {[]}
+            scope: ->(controller) {[]}
           })
           cattr_accessor :sanction_scope
           self.sanction_scope = options[:scope]
