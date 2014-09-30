@@ -7,7 +7,6 @@ require 'rails_sanction/resolvers/query'
 require 'rails_sanction/resolvers/model'
 require 'rails_sanction/sanctioned'
 require "rails_sanction/extensions/node"
-require 'rails_sanction/extensions/permissions'
 require 'rails_sanction/extensions/controller'
 require 'rails_sanction/extensions/relation'
 require "rails_sanction/version"

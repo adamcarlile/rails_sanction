@@ -8,17 +8,21 @@ module RailsSanction
         helper_method :permissions
       end
 
-      def authorize! role, object
-        predicates = [self.class.sanction_scope.call(params)].flatten.compact
-        predicates << object unless object.is_a? Class
-        raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *predicates
+      def authorize! role, object=nil
+        predicates =  permission_predicates.dup
+        predicates << object if object
+        raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *predicates.compact
       end
 
       def permissions
-        if self.class.sanction_scope.call(params)
-          current_user.permissions.find(self.class.sanction_scope.call(params).last)
-        else
-          current_user.permissions
+        Sanction::Permission.new(current_user.permissions, *permission_predicates).path
+      end
+
+      def permission_predicates
+        @permission_predicates ||= begin
+          predicates = [current_user.permissions.root]
+          predicates += self.class.sanction_scope.call(params).flatten.compact if self.class.sanction_scope.call(params).any? 
+          predicates
         end
       end
 
@@ -27,7 +31,7 @@ module RailsSanction
 
         def sanctioned options={}
           options.reverse_merge!({
-            scope: ->(params={}) {}
+            scope: ->(params={}) {[]}
           })
           cattr_accessor :sanction_scope
           self.sanction_scope = options[:scope]
