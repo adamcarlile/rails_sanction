@@ -3,7 +3,12 @@ module RailsSanction
     module Relation
 
       def permitted(perm)
-        perm.permitted? ? including(perm.allowed_ids).excluding(perm.denied_ids) : none
+        if perm.permitted?
+          return self if perm.wildcarded?
+          including(perm.allowed_ids).excluding(perm.denied_ids)
+        else
+          none
+        end
       end
 
       def including(allowed_ids=[])
