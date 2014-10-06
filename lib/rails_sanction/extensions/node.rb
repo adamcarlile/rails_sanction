@@ -33,7 +33,7 @@ module RailsSanction
 
       def add_object(object, options={})
         @available_models = nil
-        options.reverse_merge!({scope: [], mode: :blacklist})
+        options.reverse_merge!({scope: scope, mode: mode})
         add_subject({
           id:   object.id,
           type: object.class.to_s.demodulize.downcase.to_sym
