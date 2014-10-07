@@ -26,13 +26,7 @@ module RailsSanction
         @instance_sanction_scope ||= [instance_eval(&self.class.sanction_scope)].flatten.compact
       end
 
-      def add_permission_for object
-        perm = current_user.permissions.path.last
-        perm.add_object(shelf) if perm.whitelist?
-        true
-      end
-
-
+     
       module ClassMethods
 
         def sanctioned options={}
