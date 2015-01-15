@@ -9,9 +9,13 @@ module RailsSanction
       end
 
       def authorize! role, object=nil
-        predicates =  permission_predicates.dup
-        predicates << object if object
-        raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *predicates.compact
+        @predicates =  permission_predicates.dup
+        @predicates << object if object
+        raise RailsSanction::Exceptions::Unauthorized unless current_user.can? role, *@predicates.compact
+      end
+
+      def predicates
+        @predicates
       end
 
       def permissions
