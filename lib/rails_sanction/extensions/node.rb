@@ -23,8 +23,15 @@ module RailsSanction
         @available_models ||= ActiveRecord::Base.connection.tables.map(&:singularize).map(&:to_sym)
       end
 
-      def find(object)
-        super(object.class.to_s.demodulize.downcase, object.id)
+      def find(*args)
+        if args.count > 1
+          type = args.first.class.to_s.demodulize.downcase
+          id = args.last.id
+        else
+          type = args.first
+          id = args.last
+        end
+        super(type, id)
       end
 
       def available_pluralised_models
