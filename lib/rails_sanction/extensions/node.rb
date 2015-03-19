@@ -24,9 +24,9 @@ module RailsSanction
       end
 
       def find(*args)
-        if args.count > 1
+        if args.count == 1
           type = args.first.class.to_s.demodulize.downcase
-          id = args.last.id
+          id = args.first.id
         else
           type = args.first
           id = args.last
