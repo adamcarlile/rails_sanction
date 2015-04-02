@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = RailsSanction::VERSION
   spec.authors       = ["Adam Carlile"]
   spec.email         = ["adam@benchmedia.co.uk"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{RailsSanction}
+  spec.description   = %q{RailsSanction}
+  spec.homepage      = "https://github.com/boardiq/rails_sanction"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
